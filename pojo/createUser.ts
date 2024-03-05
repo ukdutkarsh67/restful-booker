@@ -1,60 +1,87 @@
+import {faker} from "@faker-js/faker";
+import bookingData from "../test-data/booking.json"
 export default class createUser {
-    private firstname: string;
-    private lastname: string;
-    private totalprice: number;
-    private depositpaid: boolean;
-    private bookingdates: {
+    private firstName: string;
+    private lastName: string;
+    private totalPrice: number;
+    private depositPaid: boolean;
+    private bookingDates: {
         checkin:string;
         checkout:string;
     };
-    private additionalneeds: string;
+    private additionalNeeds: string;
     
     public getFirstName():string{
-        return this.firstname;
+        return this.firstName;
     }
 
     public getLastName():string{
-        return this.lastname;
+        return this.lastName;
     }
 
     public getTotalPrice():number{
-        return this.totalprice;
+        return this.totalPrice;
     }
 
     public getDepositPaid():boolean{
-        return this.depositpaid;
+        return this.depositPaid;
     }
 
     public getBookingDates():{checkin:string;checkout:string}{
-        return this.bookingdates;
+        return this.bookingDates;
+    }
+    public getCheckInDates():string{
+        return this.bookingDates.checkin;
+    }
+
+    public getCheckOutDates():string{
+        return this.bookingDates.checkin;
     }
 
     public getAdditionalNeeds():string{
-        return this.additionalneeds;
+        return this.additionalNeeds;
     }
 
     public setFirstName(firstname: string):void{
-        this.firstname=firstname;
+        this.firstName=firstname;
     }
 
     public setLastName(lastname: string):void{
-        this.lastname=lastname;
+        this.lastName=lastname;
     }
     
     public setTotalPrice(totalprice: number):void{
-        this.totalprice=totalprice;
+        this.totalPrice=totalprice;
     }
 
     public setDepositPaid(depositpaid: boolean):void{
-        this.depositpaid=depositpaid;
+        this.depositPaid=depositpaid;
     }
 
     public setBookingDates(values:{checkin:string , checkout:string}):void{
-        this.bookingdates= values;
+        this.bookingDates= values;
     }
 
     public setAdditionalNeeds(additionalneeds: string):void{
-        this.additionalneeds=additionalneeds;
+        this.additionalNeeds=additionalneeds;
+    }
+
+    public setUserData(){
+        // this.setFirstName(faker.person.firstName());
+        // this.setLastName(faker.person.lastName());
+        // this.setTotalPrice(+faker.commerce.price());
+        // this.setDepositPaid(faker.datatype.boolean(1));
+        // const checkin = faker.date.soon().toISOString().split('T')[0];
+        // const  checkout = faker.date.soon({days:5,refDate: checkin}).toISOString().split('T')[0];
+        // this.setBookingDates({checkin,checkout});
+        // this.setAdditionalNeeds(faker.commerce.productName());
+
+        this.setFirstName(bookingData.firstname);
+        this.setLastName(bookingData.lastname);
+        this.setTotalPrice(bookingData.totalprice);
+        this.setDepositPaid(bookingData.depositpaid);
+        this.setAdditionalNeeds(bookingData.additionalneeds);
+        this.setBookingDates(bookingData.bookingdates);
     }
     
 }

@@ -1,31 +1,40 @@
 import { expect, test } from "playwright/test";
-import bookingData from "../../test-data/post-booking.json";
 import createUser from "../../pojo/createUser";
 
-test.describe('create booking',async ()=>{
+test.describe.serial('Create Booking',()=>{
     let newUser;
     test.beforeAll(async () => {
         newUser=new createUser();
-        newUser.setFirstName(bookingData.firstname);
-        newUser.setLastName(bookingData.lastname);
-        newUser.setTotalPrice(bookingData.totalprice);
-        newUser.setDepositPaid(bookingData.depositpaid);
-        newUser.setAdditionalNeeds(bookingData.additionalneeds);
-        newUser.setBookingDates(bookingData.bookingdates);
+        newUser.setUserData();
     });
     test("Create Booking", async ({ request, baseURL }) => {
       const response = await request.post(`${baseURL}/booking`, {
-        data: newUser,
+        data: {
+            "firstname": newUser.getFirstName(),
+            "lastname": newUser.getLastName(),
+            "totalprice": newUser.getTotalPrice(),
+            "depositpaid": newUser.getDepositPaid(),
+            "bookingdates": {
+                "checkin": newUser.getCheckInDates(),
+                "checkout": newUser.getCheckOutDates()
+            },
+            "additionalneeds": newUser.getAdditionalNeeds()   
+        },
       });
     
       const responseBody = await response.json();
+      process.env.BOOKING_ID_1 = responseBody.bookingid;
+      console.log(newUser);
       expect(response.status()).toBe(200);
       expect(response.ok()).toBeTruthy();
       expect(responseBody.booking).toHaveProperty(
         "firstname",
         newUser.getFirstName()
       );
-      expect(responseBody.booking).toHaveProperty("lastname", bookingData.lastname);
+      expect(responseBody.booking).toHaveProperty(
+        "lastname",
+        newUser.getLastName()
+      );
       expect(responseBody.booking).toHaveProperty(
         "totalprice",
         newUser.getTotalPrice()
@@ -39,5 +48,5 @@ test.describe('create booking',async ()=>{
         newUser.getAdditionalNeeds()
       );
     });
-
+    
 });
