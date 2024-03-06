@@ -1,4 +1,4 @@
-import authentication from "../../test-data/authentication.json";
+import authentication from "../test-data/authentication.json";
 export async function generateToken({request,baseURL}){
     const authenticatKey=await request.post(`${baseURL}/auth`,{
         data: {

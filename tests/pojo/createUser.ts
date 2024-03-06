@@ -74,7 +74,6 @@ export default class createUser {
         const  checkout = faker.date.soon({days:5,refDate: checkin}).toISOString().split('T')[0];
         this.setBookingDates({checkin,checkout});
         this.setAdditionalNeeds(faker.commerce.productName());
-
     }
     
 }
