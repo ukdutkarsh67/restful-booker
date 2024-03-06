@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test'
 import createUser from '../pojo/createUser';
 import updatedUserData from "../test-data/update-booking.json";
 import { generateToken } from '../generateToken/generateToken';
+import { Request } from '../request/Request';
 test.describe.serial(() => {
     let newUser;
     let updatedUser;
@@ -18,20 +19,7 @@ test.describe.serial(() => {
         process.env.authToken = await generateToken({ request, baseURL });
     });
     test("Create Booking", async ({ request, baseURL }) => {
-        const response = await request.post(`${baseURL}/booking`, {
-            data: {
-                "firstname": newUser.getFirstName(),
-                "lastname": newUser.getLastName(),
-                "totalprice": newUser.getTotalPrice(),
-                "depositpaid": newUser.getDepositPaid(),
-                "bookingdates": {
-                    "checkin": newUser.getCheckInDates(),
-                    "checkout": newUser.getCheckOutDates()
-                },
-                "additionalneeds": newUser.getAdditionalNeeds()
-            },
-        });
-
+        const response=await Request.postRequest(request,baseURL,newUser);
         const responseBody = await response.json();
         process.env.BOOKING_ID = responseBody.bookingid;
         expect(response.status()).toBe(200);
@@ -59,49 +47,44 @@ test.describe.serial(() => {
     });
 
     test("Get Booking By Lastname @get", async ({ request, baseURL }) => {
-        const response = await request.get(`${baseURL}/booking`, {
-            params: {
-                lastname: "Brown",
-            },
-        });
+        const queryParameters = {
+            lastname: "Brown",
+        }
+        const response=await Request.getRequestByParam(request,baseURL,queryParameters);
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
     });
 
     test("Get Booking By Firstname @get", async ({ request, baseURL }) => {
-        const response = await request.get(`${baseURL}/booking`, {
-            params: {
-                firstname: "Sally",
-            },
-        });
+        const queryParameters = {
+            firstname: "Sally",
+        }
+        const response=await Request.getRequestByParam(request,baseURL,queryParameters);
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
     });
 
     test("Get Booking By Checkin Date @get", async ({ request, baseURL }) => {
-        const response = await request.get(`${baseURL}/booking`, {
-            params: {
-                checkin: "2013-02-23",
-            },
-        });
+        const queryParameters = {
+            checkin: "2013-02-23",
+        }
+        const response=await Request.getRequestByParam(request,baseURL,queryParameters);
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
     });
 
     test("Get Booking By Checkout Date @get", async ({ request, baseURL }) => {
-        const response = await request.get(`${baseURL}/booking`, {
-            params: {
-                checkout: "2014-10-23",
-            },
-        });
+        const queryParameters = {
+            checkout: "2014-10-23",
+        }
+        const response=await Request.getRequestByParam(request,baseURL,queryParameters);
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
     });
 
     test("Get Booking By ID @get", async ({ request, baseURL }) => {
         let ID = process.env.BOOKING_ID;
-        const url = `${baseURL}/booking/`;
-        const response = await request.get(url + ID, {});
+        const response=await Request.getRequestByID(request,baseURL,ID);
         const responseBody = await response.json();
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
@@ -117,22 +100,13 @@ test.describe.serial(() => {
         const response2 = await request.get(url + ID, {});
         expect(response2.status()).toBe(200);
 
-        const response = await request.patch(url + ID, {
-            headers: {
-                Cookie: `token=${process.env.authToken}`,
-                Accept: "application/json",
-            },
-            data: {
-                firstname: "James",
-                lastname: "Brown",
-            },
-        });
+        const response=await Request.patchRequest(request,baseURL,ID,updatedUser);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
         const responseBody = await response.json();
 
-        expect(responseBody).toHaveProperty("firstname", "James");
-        expect(responseBody).toHaveProperty("lastname", "Brown");
+        expect(responseBody).toHaveProperty("firstname", "Krystian");
+        expect(responseBody).toHaveProperty("lastname", "Wafel");
         expect(responseBody).toHaveProperty("totalprice", newUser.getTotalPrice());
         expect(responseBody).toHaveProperty("depositpaid", newUser.getDepositPaid());
         expect(responseBody).toHaveProperty(
@@ -142,32 +116,13 @@ test.describe.serial(() => {
     });
     test("Update Booking @put", async ({ request, baseURL }) => {
         let ID = process.env.BOOKING_ID;
-        const url = `${baseURL}/booking/`;
-        const response2 = await request.get(url + ID, {});
+        const response2=await Request.getRequestByID(request,baseURL,ID);
         expect(response2.status()).toBe(200);
 
-        const response = await request.put(url + ID, {
-            headers: {
-                Cookie: `token=${process.env.authToken}`,
-                Accept: "*/*",
-            },
-            data: {
-                "firstname": updatedUser.getFirstName(),
-                "lastname": updatedUser.getLastName(),
-                "totalprice": updatedUser.getTotalPrice(),
-                "depositpaid": updatedUser.getDepositPaid(),
-                "bookingdates": {
-                    "checkin": updatedUser.getCheckInDates(),
-                    "checkout": updatedUser.getCheckOutDates()
-                },
-                "additionalneeds": updatedUser.getAdditionalNeeds()
-            }
-
-        });
+        const response=await Request.putRequest(request,baseURL,updatedUser,ID);
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
         const responseBody = await response.json();
-
         expect(responseBody).toHaveProperty(
             "firstname",
             updatedUser.getFirstName()
@@ -191,23 +146,16 @@ test.describe.serial(() => {
     });
     test("Delete Booking @delete", async ({ request, baseURL }) => {
         let ID = process.env.BOOKING_ID;
-        const url = `${baseURL}/booking/`;
-        const response2 = await request.get(url + ID, {});
+        const response2=await Request.getRequestByID(request,baseURL,ID);
         expect(response2.status()).toBe(200);
 
-        const response = await request.delete(url + ID, {
-            headers: {
-                Cookie: `token=${process.env.authToken}`,
-                Accept: "application/json",
-            },
-        });
-
+        const response=await Request.deleteRequest(request,baseURL,ID);
         expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(201);
         expect(response.statusText()).toBe("Created");
 
         const getUrl = `${baseURL}/booking/`;
-        const getResponse = await request.get(getUrl + ID, {});
+        const getResponse=await Request.getRequestByID(request,baseURL,ID);
         expect(getResponse.status()).toBe(404);
         expect(getResponse.statusText()).toBe("Not Found");
     });
