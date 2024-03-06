@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
 import createUser from '../pojo/createUser';
-import updatedUserData from "../test-data/update-booking.json";
 import { generateToken } from '../generateToken/generateToken';
 import { Request } from '../request/Request';
 test.describe.serial(() => {
@@ -10,12 +9,7 @@ test.describe.serial(() => {
         newUser = new createUser();
         newUser.setUserData();
         updatedUser = new createUser();
-        updatedUser.setFirstName(updatedUserData.firstname);
-        updatedUser.setLastName(updatedUserData.lastname);
-        updatedUser.setTotalPrice(updatedUserData.totalprice);
-        updatedUser.setDepositPaid(updatedUserData.depositpaid);
-        updatedUser.setAdditionalNeeds(updatedUserData.additionalneeds);
-        updatedUser.setBookingDates(updatedUserData.bookingdates);
+        updatedUser.setUserData();
         process.env.authToken = await generateToken({ request, baseURL });
     });
     test("Create Booking", async ({ request, baseURL }) => {
@@ -96,8 +90,7 @@ test.describe.serial(() => {
 
     test("Update Booking Partially - Udpate firstname and lastname @patch", async ({ request, baseURL }) => {
         let ID = process.env.BOOKING_ID;
-        const url = `${baseURL}/booking/`;
-        const response2 = await request.get(url + ID, {});
+        const response2 = await Request.getRequestByID(request, baseURL, ID);
         expect(response2.status()).toBe(200);
 
         const response = await Request.patchRequest(request, baseURL, ID, updatedUser);
@@ -105,8 +98,8 @@ test.describe.serial(() => {
         expect(response.ok()).toBeTruthy();
         const responseBody = await response.json();
 
-        expect(responseBody).toHaveProperty("firstname", "Krystian");
-        expect(responseBody).toHaveProperty("lastname", "Wafel");
+        expect(responseBody).toHaveProperty("firstname", updatedUser.getFirstName());
+        expect(responseBody).toHaveProperty("lastname", updatedUser.getLastName());
         expect(responseBody).toHaveProperty("totalprice", newUser.getTotalPrice());
         expect(responseBody).toHaveProperty("depositpaid", newUser.getDepositPaid());
         expect(responseBody).toHaveProperty(
