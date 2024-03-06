@@ -1,5 +1,4 @@
 import {faker} from "@faker-js/faker";
-import bookingData from "../test-data/booking.json"
 export default class createUser {
     private firstName: string;
     private lastName: string;
@@ -67,21 +66,15 @@ export default class createUser {
     }
 
     public setUserData(){
-        // this.setFirstName(faker.person.firstName());
-        // this.setLastName(faker.person.lastName());
-        // this.setTotalPrice(+faker.commerce.price());
-        // this.setDepositPaid(faker.datatype.boolean(1));
-        // const checkin = faker.date.soon().toISOString().split('T')[0];
-        // const  checkout = faker.date.soon({days:5,refDate: checkin}).toISOString().split('T')[0];
-        // this.setBookingDates({checkin,checkout});
-        // this.setAdditionalNeeds(faker.commerce.productName());
+        this.setFirstName(faker.person.firstName());
+        this.setLastName(faker.person.lastName());
+        this.setTotalPrice(+faker.commerce.price());
+        this.setDepositPaid(faker.datatype.boolean(1));
+        const checkin = faker.date.soon().toISOString().split('T')[0];
+        const  checkout = faker.date.soon({days:5,refDate: checkin}).toISOString().split('T')[0];
+        this.setBookingDates({checkin,checkout});
+        this.setAdditionalNeeds(faker.commerce.productName());
 
-        this.setFirstName(bookingData.firstname);
-        this.setLastName(bookingData.lastname);
-        this.setTotalPrice(bookingData.totalprice);
-        this.setDepositPaid(bookingData.depositpaid);
-        this.setAdditionalNeeds(bookingData.additionalneeds);
-        this.setBookingDates(bookingData.bookingdates);
     }
     
 }

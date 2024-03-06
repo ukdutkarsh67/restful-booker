@@ -24,7 +24,6 @@ test.describe.serial('Create Booking',()=>{
     
       const responseBody = await response.json();
       process.env.BOOKING_ID_1 = responseBody.bookingid;
-      console.log(newUser);
       expect(response.status()).toBe(200);
       expect(response.ok()).toBeTruthy();
       expect(responseBody.booking).toHaveProperty(

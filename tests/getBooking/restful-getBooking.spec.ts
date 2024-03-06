@@ -1,10 +1,9 @@
 import { expect, test } from "playwright/test";
-import bookingData from "../../test-data/booking.json";
 import createUser from "../../pojo/createUser";
 
 test.describe('get Booking', () => {
   let newUser;
-  test.beforeAll(async ({ }) => {
+  test.beforeAll(async () => {
     newUser = new createUser();
     newUser.setUserData();
 
@@ -27,7 +26,7 @@ test.describe('get Booking', () => {
     expect(response.ok()).toBeTruthy();
 
     const responseBody = await response.json();
-    process.env.BOOKING_ID_3 = responseBody.bookingid;
+    process.env.BOOKING_ID_2 = responseBody.bookingid;
   });
 
   test("Get Booking By Lastname @get", async ({ request, baseURL }) => {
@@ -71,11 +70,10 @@ test.describe('get Booking', () => {
   });
 
   test("Get Booking By ID @get", async ({ request, baseURL }) => {
-    let ID = process.env.BOOKING_ID_3;
+    let ID = process.env.BOOKING_ID_2;
     const url = `${baseURL}/booking/`;
     const response = await request.get(url + ID, {});
     const responseBody = await response.json();
-
     expect(response.status()).toBe(200);
     expect(response.ok()).toBeTruthy();
     expect(responseBody).toHaveProperty("firstname", newUser.getFirstName());

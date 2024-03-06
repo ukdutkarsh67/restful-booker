@@ -1,6 +1,6 @@
 import { expect, test } from "playwright/test";
 import updatedUserData from "../../test-data/update-booking.json";
-import authentication from "../../test-data/authentication.json";
+import { generateToken } from "../generateToken/generateToken";
 import createUser from "../../pojo/createUser";
 test.describe('update booking',()=>{
     let newUser;
@@ -16,16 +16,8 @@ test.describe('update booking',()=>{
         updatedUser.setAdditionalNeeds(updatedUserData.additionalneeds);
         updatedUser.setBookingDates(updatedUserData.bookingdates);
     });
-    test.beforeEach("Create Booking", async ({ request, baseURL }) => {
-        const authenticatKey=await request.post(`${baseURL}/auth`,{
-            data: {
-                "username" : authentication.username,
-                "password" : authentication.password
-            }
-        });
-        const authBody=await authenticatKey.json();
-        process.env.authToken = authBody.token;
-        console.log(authBody)
+    test.beforeEach("Create Booking and generate token", async ({ request, baseURL }) => {
+        process.env.authToken = await generateToken({request,baseURL});
         const response = await request.post(`${baseURL}/booking`, {
         
           data: {
@@ -44,11 +36,11 @@ test.describe('update booking',()=>{
         expect(response.ok()).toBeTruthy();
       
         const responseBody = await response.json();
-        process.env.BOOKING_ID_5 = responseBody.bookingid;
+        process.env.BOOKING_ID_4 = responseBody.bookingid;
       });
       
       test("Update Booking @put", async ({ request, baseURL }) => {
-        let ID = process.env.BOOKING_ID_5;
+        let ID = process.env.BOOKING_ID_4;
         const url = `${baseURL}/booking/`;
         const response2 = await request.get(url + ID, {});
         expect(response2.status()).toBe(200);
@@ -75,7 +67,6 @@ test.describe('update booking',()=>{
         expect(response.ok()).toBeTruthy();
         const responseBody = await response.json();
       
-        console.log(responseBody);
         expect(responseBody).toHaveProperty(
           "firstname",
           updatedUser.getFirstName()
