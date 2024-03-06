@@ -1,7 +1,7 @@
-export class Request{
-    public static async postRequest(request,baseURL,userData){
+export class Request {
+    public static async postRequest(request, baseURL, userData) {
         const response = await request.post(`${baseURL}/booking`, {
-               data: {
+            data: {
                 "firstname": userData.getFirstName(),
                 "lastname": userData.getLastName(),
                 "totalprice": userData.getTotalPrice(),
@@ -12,11 +12,11 @@ export class Request{
                 },
                 "additionalneeds": userData.getAdditionalNeeds()
             },
-          });
-          return response;
+        });
+        return response;
     }
 
-    public static async getRequestByParam(request,baseURL,paramData){
+    public static async getRequestByParam(request, baseURL, paramData) {
         const response = await request.get(`${baseURL}/booking`, {
             params: {
                 paramData,
@@ -25,13 +25,13 @@ export class Request{
         return response;
     }
 
-    public static async getRequestByID(request,baseURL,ID){
+    public static async getRequestByID(request, baseURL, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.get(url + ID, {});
         return response;
     }
 
-    public static async patchRequest(request,baseURL,ID,partialData){
+    public static async patchRequest(request, baseURL, ID, partialData) {
         const url = `${baseURL}/booking/`;
         const response = await request.patch(url + ID, {
             headers: {
@@ -39,14 +39,14 @@ export class Request{
                 Accept: "application/json",
             },
             data: {
-                "firstname": partialData.getFirstName(), 
-                "lastname": partialData.getLastName(), 
+                "firstname": partialData.getFirstName(),
+                "lastname": partialData.getLastName(),
             },
         });
         return response;
     }
 
-    public static async putRequest(request,baseURL,updatedUser,ID) {
+    public static async putRequest(request, baseURL, updatedUser, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.put(url + ID, {
             headers: {
@@ -69,7 +69,7 @@ export class Request{
         return response;
     }
 
-    public static async deleteRequest(request, baseURL, ID){
+    public static async deleteRequest(request, baseURL, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.delete(url + ID, {
             headers: {
@@ -80,6 +80,6 @@ export class Request{
         return response;
     }
 
-    
-    
+
+
 }
