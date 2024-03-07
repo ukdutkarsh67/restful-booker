@@ -1,6 +1,8 @@
 export class Request {
+    // Method for making a POST request
     public static async postRequest(request, baseURL, userData) {
         const response = await request.post(`${baseURL}/booking`, {
+            // Data payload for the POST request
             data: {
                 "firstname": userData.getFirstName(),
                 "lastname": userData.getLastName(),
@@ -16,8 +18,10 @@ export class Request {
         return response;
     }
 
+    // Method for making a GET request with parameters
     public static async getRequestByParam(request, baseURL, paramData) {
         const response = await request.get(`${baseURL}/booking`, {
+            // Parameters for the GET request
             params: {
                 paramData,
             },
@@ -25,15 +29,18 @@ export class Request {
         return response;
     }
 
+    // Method for making a GET request by ID
     public static async getRequestByID(request, baseURL, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.get(url + ID, {});
         return response;
     }
 
+    // Method for making a PATCH request
     public static async patchRequest(request, baseURL, ID, partialData) {
         const url = `${baseURL}/booking/`;
         const response = await request.patch(url + ID, {
+            // Headers and data payload for the PATCH request
             headers: {
                 Cookie: `token=${process.env.authToken}`,
                 Accept: "application/json",
@@ -46,9 +53,11 @@ export class Request {
         return response;
     }
 
+    // Method for making a PUT request
     public static async putRequest(request, baseURL, updatedUser, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.put(url + ID, {
+            // Headers and data payload for the PUT request
             headers: {
                 Cookie: `token=${process.env.authToken}`,
                 Accept: "*/*",
@@ -64,14 +73,15 @@ export class Request {
                 },
                 "additionalneeds": updatedUser.getAdditionalNeeds()
             }
-
         });
         return response;
     }
 
+    // Method for making a DELETE request
     public static async deleteRequest(request, baseURL, ID) {
         const url = `${baseURL}/booking/`;
         const response = await request.delete(url + ID, {
+            // Headers for the DELETE request
             headers: {
                 Cookie: `token=${process.env.authToken}`,
                 Accept: "application/json",
@@ -79,7 +89,4 @@ export class Request {
         });
         return response;
     }
-
-
-
 }

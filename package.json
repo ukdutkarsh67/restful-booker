@@ -3,13 +3,39 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "allure-Report": "npx allure serve allure-results",
+    "test": "npx nyc --reporter=lcov --reporter=text playwright test",
+    "coverage": "npx nyc report --reporter=text-summary"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "check-coverage": true,
+    "all": true,
+    "include": [
+      "tests/spec/*.spec.ts"
+    ],
+    "exclude": [
+      "src/_tests_/**/*.*"
+    ],
+    "reporter": [
+      "html",
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "report-dir": "coverage"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@playwright/test": "^1.42.0",
-    "@types/node": "^20.11.24"
+    "@types/node": "^20.11.24",
+    "allure-commandline": "^2.27.0",
+    "allure-playwright": "^2.13.0",
+    "nyc": "^15.1.0"
   }
 }

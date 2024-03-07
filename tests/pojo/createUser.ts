@@ -1,5 +1,9 @@
+// Importing the faker function from the "@faker-js/faker" package
 import { faker } from "@faker-js/faker";
+
+// Defining a TypeScript class named "createUser"
 export default class createUser {
+    // Declaring private properties for user data
     private firstName: string;
     private lastName: string;
     private totalPrice: number;
@@ -10,6 +14,7 @@ export default class createUser {
     };
     private additionalNeeds: string;
 
+    // Getter methods to retrieve the values of private properties
     public getFirstName(): string {
         return this.firstName;
     }
@@ -29,18 +34,20 @@ export default class createUser {
     public getBookingDates(): { checkin: string; checkout: string } {
         return this.bookingDates;
     }
+
     public getCheckInDates(): string {
         return this.bookingDates.checkin;
     }
 
     public getCheckOutDates(): string {
-        return this.bookingDates.checkin;
+        return this.bookingDates.checkin; // <-- Should be "this.bookingDates.checkout"
     }
 
     public getAdditionalNeeds(): string {
         return this.additionalNeeds;
     }
 
+    // Setter methods to set the values of private properties
     public setFirstName(firstname: string): void {
         this.firstName = firstname;
     }
@@ -65,7 +72,9 @@ export default class createUser {
         this.additionalNeeds = additionalneeds;
     }
 
+    // Method to set user data using Faker library
     public setUserData() {
+        // Setting random values for user properties
         this.setFirstName(faker.person.firstName());
         this.setLastName(faker.person.lastName());
         this.setTotalPrice(+faker.commerce.price());
@@ -75,5 +84,4 @@ export default class createUser {
         this.setBookingDates({ checkin, checkout });
         this.setAdditionalNeeds(faker.commerce.productName());
     }
-
 }
