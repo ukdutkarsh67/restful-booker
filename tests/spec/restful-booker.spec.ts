@@ -116,16 +116,16 @@ test.describe.serial(() => {
 
         // Assert that the booking data matches the expected values
         expect(responseBody).toHaveProperty(
-            "firstname", 
+            "firstname",
             newBooking.getFirstName());
         expect(responseBody).toHaveProperty(
-            "lastname", 
+            "lastname",
             newBooking.getLastName());
         expect(responseBody).toHaveProperty(
-            "totalprice", 
+            "totalprice",
             newBooking.getTotalPrice());
         expect(responseBody).toHaveProperty(
-            "depositpaid", 
+            "depositpaid",
             newBooking.getDepositPaid());
     });
 
@@ -154,10 +154,10 @@ test.describe.serial(() => {
             "lastname",
             updatedBooking.getLastName());
         expect(responseBody).toHaveProperty(
-            "totalprice", 
+            "totalprice",
             newBooking.getTotalPrice());
         expect(responseBody).toHaveProperty(
-            "depositpaid", 
+            "depositpaid",
             newBooking.getDepositPaid());
         expect(responseBody).toHaveProperty(
             "additionalneeds",
