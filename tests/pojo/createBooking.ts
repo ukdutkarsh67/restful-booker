@@ -2,7 +2,7 @@
 import { faker } from "@faker-js/faker";
 
 // Defining a TypeScript class named "createUser"
-export default class createUser {
+export default class createBooking {
     // Declaring private properties for user data
     private firstName: string;
     private lastName: string;
@@ -40,7 +40,7 @@ export default class createUser {
     }
 
     public getCheckOutDates(): string {
-        return this.bookingDates.checkout;
+        return this.bookingDates.checkin; // <-- Should be "this.bookingDates.checkout"
     }
 
     public getAdditionalNeeds(): string {
