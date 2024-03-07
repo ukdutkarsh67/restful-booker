@@ -40,7 +40,7 @@ export default class createUser {
     }
 
     public getCheckOutDates(): string {
-        return this.bookingDates.checkin; // <-- Should be "this.bookingDates.checkout"
+        return this.bookingDates.checkout;
     }
 
     public getAdditionalNeeds(): string {
