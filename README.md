@@ -50,17 +50,5 @@ Through this project, I gained practical experience in:
 - Validating API responses and asserting expected behavior.
 
 
-## Conclusion
-
-This project demonstrates how to implement an API test suite using Playwright in TypeScript. It covers various aspects such as generating mock data, making HTTP requests, handling authentication, and validating responses.
-
-## Learning
-
-Through this project, I gained practical experience in:
-
-- Setting up and configuring Playwright for API testing.
-- Writing test cases for CRUD operations on RESTful APIs.
-- Handling authentication and authorization in API testing.
-- Validating API responses and asserting expected behavior.
 
 
