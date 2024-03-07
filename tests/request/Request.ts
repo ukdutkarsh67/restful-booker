@@ -1,18 +1,18 @@
 export class Request {
     // Method for making a POST request
-    public static async postRequest(request, baseURL, userData) {
+    public static async postRequest(request, baseURL, bookingData) {
         const response = await request.post(`${baseURL}/booking`, {
             // Data payload for the POST request
             data: {
-                "firstname": userData.getFirstName(),
-                "lastname": userData.getLastName(),
-                "totalprice": userData.getTotalPrice(),
-                "depositpaid": userData.getDepositPaid(),
+                "firstname": bookingData.getFirstName(),
+                "lastname": bookingData.getLastName(),
+                "totalprice": bookingData.getTotalPrice(),
+                "depositpaid": bookingData.getDepositPaid(),
                 "bookingdates": {
-                    "checkin": userData.getCheckInDates(),
-                    "checkout": userData.getCheckOutDates()
+                    "checkin": bookingData.getCheckInDates(),
+                    "checkout": bookingData.getCheckOutDates()
                 },
-                "additionalneeds": userData.getAdditionalNeeds()
+                "additionalneeds": bookingData.getAdditionalNeeds()
             },
         });
         return response;
