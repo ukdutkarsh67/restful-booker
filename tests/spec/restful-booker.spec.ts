@@ -115,10 +115,18 @@ test.describe.serial(() => {
         expect(response.ok()).toBeTruthy();
 
         // Assert that the booking data matches the expected values
-        expect(responseBody).toHaveProperty("firstname", newBooking.getFirstName());
-        expect(responseBody).toHaveProperty("lastname", newBooking.getLastName());
-        expect(responseBody).toHaveProperty("totalprice", newBooking.getTotalPrice());
-        expect(responseBody).toHaveProperty("depositpaid", newBooking.getDepositPaid());
+        expect(responseBody).toHaveProperty(
+            "firstname", 
+            newBooking.getFirstName());
+        expect(responseBody).toHaveProperty(
+            "lastname", 
+            newBooking.getLastName());
+        expect(responseBody).toHaveProperty(
+            "totalprice", 
+            newBooking.getTotalPrice());
+        expect(responseBody).toHaveProperty(
+            "depositpaid", 
+            newBooking.getDepositPaid());
     });
 
     // Test to update a booking partially
@@ -139,10 +147,18 @@ test.describe.serial(() => {
         const responseBody = await response.json();
 
         // Assert that the booking updated data matches the expected values
-        expect(responseBody).toHaveProperty("firstname", updatedBooking.getFirstName());
-        expect(responseBody).toHaveProperty("lastname", updatedBooking.getLastName());
-        expect(responseBody).toHaveProperty("totalprice", newBooking.getTotalPrice());
-        expect(responseBody).toHaveProperty("depositpaid", newBooking.getDepositPaid());
+        expect(responseBody).toHaveProperty(
+            "firstname",
+            updatedBooking.getFirstName());
+        expect(responseBody).toHaveProperty(
+            "lastname",
+            updatedBooking.getLastName());
+        expect(responseBody).toHaveProperty(
+            "totalprice", 
+            newBooking.getTotalPrice());
+        expect(responseBody).toHaveProperty(
+            "depositpaid", 
+            newBooking.getDepositPaid());
         expect(responseBody).toHaveProperty(
             "additionalneeds",
             newBooking.getAdditionalNeeds()
