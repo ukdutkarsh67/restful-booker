@@ -1,18 +1,18 @@
 import { test, expect } from '@playwright/test'
-import createUser from '../pojo/createUser';
+import createBooking from '../pojo/createBooking';
 import { generateToken } from '../generateToken/generateToken';
 import { Request } from '../request/Request';
 test.describe.serial(() => {
-    let newUser;
-    let updatedUser;
+    let newBooking;
+    let updatedBooking;
     test.beforeAll(async ({ request, baseURL }) => {
-        // Create a new user
-        newUser = new createUser();
-        newUser.setUserData();
+        // Create a new booking
+        newBooking = new createBooking();
+        newBooking.setUserData();
 
-        // Create an updated user
-        updatedUser = new createUser();
-        updatedUser.setUserData();
+        // Create an updated booking
+        updatedBooking = new createBooking();
+        updatedBooking.setUserData();
 
         // Generate an authentication token for the tests
         process.env.authToken = await generateToken({ request, baseURL });
@@ -21,7 +21,7 @@ test.describe.serial(() => {
     // Test to create a booking
     test("Create Booking", async ({ request, baseURL }) => {
         // Send a POST request to create a booking
-        const response = await Request.postRequest(request, baseURL, newUser);
+        const response = await Request.postRequest(request, baseURL, newBooking);
         // Extract the booking data from the response
         const responseBody = await response.json();
         process.env.BOOKING_ID = responseBody.bookingid;
@@ -31,23 +31,23 @@ test.describe.serial(() => {
         // Assert that the booking data matches the expected values
         expect(responseBody.booking).toHaveProperty(
             "firstname",
-            newUser.getFirstName()
+            newBooking.getFirstName()
         );
         expect(responseBody.booking).toHaveProperty(
             "lastname",
-            newUser.getLastName()
+            newBooking.getLastName()
         );
         expect(responseBody.booking).toHaveProperty(
             "totalprice",
-            newUser.getTotalPrice()
+            newBooking.getTotalPrice()
         );
         expect(responseBody.booking).toHaveProperty(
             "depositpaid",
-            newUser.getDepositPaid()
+            newBooking.getDepositPaid()
         );
         expect(responseBody.booking).toHaveProperty(
             "additionalneeds",
-            newUser.getAdditionalNeeds()
+            newBooking.getAdditionalNeeds()
         );
     });
 
@@ -55,7 +55,7 @@ test.describe.serial(() => {
     test("Get Booking By Lastname @get", async ({ request, baseURL }) => {
         // Send a GET request to retrieve a booking by last name
         const queryParameters = {
-            lastname: "Brown",
+            lastname: newBooking.getLastName(),
         }
         const response = await Request.getRequestByParam(request, baseURL, queryParameters);
         // Assert the expected behavior
@@ -66,7 +66,7 @@ test.describe.serial(() => {
     // Test to retrieve a booking by first name
     test("Get Booking By Firstname @get", async ({ request, baseURL }) => {
         const queryParameters = {
-            firstname: "Sally",
+            firstname: newBooking.getFirstName(),
         }
         // Send a GET request to retrieve a booking by first name
         const response = await Request.getRequestByParam(request, baseURL, queryParameters);
@@ -78,7 +78,7 @@ test.describe.serial(() => {
     // Test to retrieve a booking by checkin date
     test("Get Booking By Checkin Date @get", async ({ request, baseURL }) => {
         const queryParameters = {
-            checkin: "2013-02-23",
+            checkin: newBooking.getCheckInDates(),
         }
         // Send a GET request to retrieve a booking by checkin date
         const response = await Request.getRequestByParam(request, baseURL, queryParameters);
@@ -90,7 +90,7 @@ test.describe.serial(() => {
     // Test to retrieve a booking by checkout date
     test("Get Booking By Checkout Date @get", async ({ request, baseURL }) => {
         const queryParameters = {
-            checkout: "2014-10-23",
+            checkout: newBooking.getCheckOutDates(),
         }
         // Send a GET request to retrieve a booking by checkout date
         const response = await Request.getRequestByParam(request, baseURL, queryParameters);
@@ -115,10 +115,10 @@ test.describe.serial(() => {
         expect(response.ok()).toBeTruthy();
 
         // Assert that the booking data matches the expected values
-        expect(responseBody).toHaveProperty("firstname", newUser.getFirstName());
-        expect(responseBody).toHaveProperty("lastname", newUser.getLastName());
-        expect(responseBody).toHaveProperty("totalprice", newUser.getTotalPrice());
-        expect(responseBody).toHaveProperty("depositpaid", newUser.getDepositPaid());
+        expect(responseBody).toHaveProperty("firstname", newBooking.getFirstName());
+        expect(responseBody).toHaveProperty("lastname", newBooking.getLastName());
+        expect(responseBody).toHaveProperty("totalprice", newBooking.getTotalPrice());
+        expect(responseBody).toHaveProperty("depositpaid", newBooking.getDepositPaid());
     });
 
     // Test to update a booking partially
@@ -132,20 +132,20 @@ test.describe.serial(() => {
         expect(response2.status()).toBe(200);
 
         // send a patch updated user request with modified first name and last name
-        const response = await Request.patchRequest(request, baseURL, ID, updatedUser);
+        const response = await Request.patchRequest(request, baseURL, ID, updatedBooking);
         // Assert the expected behavior
         expect(response.status()).toBe(200);
         expect(response.ok()).toBeTruthy();
         const responseBody = await response.json();
 
         // Assert that the booking updated data matches the expected values
-        expect(responseBody).toHaveProperty("firstname", updatedUser.getFirstName());
-        expect(responseBody).toHaveProperty("lastname", updatedUser.getLastName());
-        expect(responseBody).toHaveProperty("totalprice", newUser.getTotalPrice());
-        expect(responseBody).toHaveProperty("depositpaid", newUser.getDepositPaid());
+        expect(responseBody).toHaveProperty("firstname", updatedBooking.getFirstName());
+        expect(responseBody).toHaveProperty("lastname", updatedBooking.getLastName());
+        expect(responseBody).toHaveProperty("totalprice", newBooking.getTotalPrice());
+        expect(responseBody).toHaveProperty("depositpaid", newBooking.getDepositPaid());
         expect(responseBody).toHaveProperty(
             "additionalneeds",
-            newUser.getAdditionalNeeds()
+            newBooking.getAdditionalNeeds()
         );
     });
 
@@ -159,7 +159,7 @@ test.describe.serial(() => {
         expect(response2.status()).toBe(200); // Assert the booking exists
 
         // Update the booking with the new user data
-        const response = await Request.putRequest(request, baseURL, updatedUser, ID);
+        const response = await Request.putRequest(request, baseURL, updatedBooking, ID);
         expect(response.status()).toBe(200); // Assert the update was successful
         expect(response.ok()).toBeTruthy(); // Assert the response is OK
 
@@ -167,23 +167,23 @@ test.describe.serial(() => {
         const responseBody = await response.json();
         expect(responseBody).toHaveProperty(
             "firstname",
-            updatedUser.getFirstName()
+            updatedBooking.getFirstName()
         );
         expect(responseBody).toHaveProperty(
             "lastname",
-            updatedUser.getLastName()
+            updatedBooking.getLastName()
         );
         expect(responseBody).toHaveProperty(
             "totalprice",
-            updatedUser.getTotalPrice()
+            updatedBooking.getTotalPrice()
         );
         expect(responseBody).toHaveProperty(
             "depositpaid",
-            updatedUser.getDepositPaid()
+            updatedBooking.getDepositPaid()
         );
         expect(responseBody).toHaveProperty(
             "additionalneeds",
-            updatedUser.getAdditionalNeeds()
+            updatedBooking.getAdditionalNeeds()
         );
     });
 

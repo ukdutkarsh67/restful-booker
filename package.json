@@ -1,7 +1,7 @@
 {
   "name": "restful-booker",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Playwright API Framework is a TypeScript-based framework for automating API testing using Playwright. It provides a structured approach to building API automation tests with features like request handling, assertions, validations, and reusability.",
   "main": "index.js",
   "scripts": {
     "allure-Report": "npx allure serve allure-results",
